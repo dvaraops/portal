@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="icon" type="image/x-icon" href="src/logo/dvara.ico" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DVARA Web Portal</title>
+    
+    <!-- Tailwind CSS (menggantikan Bootstrap) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        maroon: {
+                            primary: '#330F19',
+                            dark: '#1a070c'
+                        },
+                        gold: {
+                            light: '#A58570'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        settingsSlideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Hapus bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+    <script src="js/api.js"></script>
+    <script type="text/babel" src="src/components/Auth.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/Crew.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/Inventory.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/LoadingForm.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/Absensi.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/HistoryEventForm.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/ApprovalForm.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/Settings.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/DashboardUI.jsx?v=3"></script>
+    <script type="text/babel" src="src/components/Dashboard.jsx?v=4"></script>
+    <script type="text/babel" src="src/components/app.jsx?v=3"></script>
+</body>
+</html>
