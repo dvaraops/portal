@@ -44,6 +44,11 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
     
+    // Topbar Search & FAB State
+    const [topbarSearch, setTopbarSearch] = useState('');
+    const [isFabOpen, setIsFabOpen] = useState(false);
+    const [fabAction, setFabAction] = useState(null);
+    
     // State Dropdown Profil
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
@@ -122,6 +127,8 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
         if (activeMenu === 'crew' || activeMenu === 'history_event') fetchCrewData();
         // Tutup sidebar otomatis tiap kali menu diklik (khusus mobile)
         setIsSidebarOpen(false); 
+        setTopbarSearch('');
+        setIsFabOpen(false);
     }, [activeMenu]);
 
     const fetchCrewData = async () => {
@@ -166,6 +173,30 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
 
     const toggleSidebar = () => { setIsSidebarCollapsed(!isSidebarCollapsed); };
 
+    const getSearchPlaceholder = () => {
+        if(activeMenu === 'dashboard') return "Search menu, event, crew...";
+        if(activeMenu === 'crew') return "Cari nama crew, role, atau ID...";
+        if(activeMenu === 'loading') return "Cari nama surat...";
+        if(activeMenu === 'inventory') return "Cari nama barang atau ID inventory...";
+        if(activeMenu === 'history_event') return "Cari nama event...";
+        return "Search...";
+    };
+
+    const getFabConfig = () => {
+        switch(activeMenu) {
+            case 'history_event': return { actions: [{ label: 'Tambah Event Baru', icon: 'fa-plus', handler: () => setFabAction('add') }] };
+            case 'inventory': return { actions: [{ label: 'Tambah Item', icon: 'fa-box-open', handler: () => setFabAction('add') }] };
+            case 'loading': return { actions: [{ label: 'Buat Surat Baru', icon: 'fa-file-pdf', handler: () => setFabAction('add') }] };
+            case 'crew': return { actions: [
+                { label: 'Tambah Crew', icon: 'fa-user-plus', handler: () => setFabAction('add') },
+                { label: 'Kirim ID Crew', icon: 'fa-whatsapp fab', handler: () => setFabAction('secondary') }
+            ]};
+            default: return null;
+        }
+    };
+    const fabConfig = getFabConfig();
+    const clearFabAction = () => setFabAction(null);
+
     return (
         // Event sentuhan di-binding ke layout utama
         <div className="dashboard-layout" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
@@ -202,17 +233,17 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
             {/* AREA KANAN */}
             <div className="main-content-wrapper">
                 
-                {/* TOP BAR - TEMA MAROON */}
+                {/* TOP BAR - WHITE THEME */}
                 <div className="top-bar">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div className="topbar-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                         
                         {/* TOMBOL HAMBURGER MOBILE */}
-                        <button className="md:hidden z-[1000] relative bg-transparent border-none text-base text-white cursor-pointer pr-1 flex items-center" onClick={() => setIsSidebarOpen(true)}>
+                        <button className="md:hidden z-[1000] relative bg-transparent border-none text-base text-slate-800 cursor-pointer pr-1 flex items-center" onClick={() => setIsSidebarOpen(true)}>
                             <i className="fas fa-bars"></i>
                         </button>
                         
                         <div>
-                            <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '600', fontFamily: 'var(--font-heading)', color: 'white' }}>
+                            <h2 className="topbar-title">
                                 {activeMenu === 'dashboard' ? 'Dashboard Overview' : 
                                  activeMenu === 'crew' ? 'Data Crew Part-time' : 
                                  activeMenu === 'loading' ? 'Loading Form' : 
@@ -220,7 +251,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                                  activeMenu === 'history_event' ? 'History Event Log' : 
                                  activeMenu === 'settings' ? 'Settings & Preferences' : 'Overtime Approval'}
                             </h2>
-                            <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: 'rgba(255, 255, 255, 0.8)' }}>
+                            <p className="topbar-subtitle">
                                 {activeMenu === 'dashboard' ? 'Ringkasan operasional DVARA hari ini.' : 
                                  activeMenu === 'crew' ? 'Klik tombol "Kirim ID" untuk sebar absen via WA.' : 
                                  activeMenu === 'loading' ? 'Daftar surat ijin keluar/masuk barang yang telah dibuat.' : 
@@ -231,17 +262,28 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                         </div>
                     </div>
 
+                    <div className="topbar-center hidden md:block">
+                        <div className="topbar-search">
+                            <i className="fas fa-search" />
+                            <input 
+                                placeholder={getSearchPlaceholder()}
+                                value={topbarSearch}
+                                onChange={e => setTopbarSearch(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
                     <div className="top-bar-actions">
                         {/* Notifikasi */}
                         <div style={{ position: 'relative' }} ref={notifRef}>
                             <div className="top-bar-icon" title="Notifications" onClick={() => setShowNotifDropdown(!showNotifDropdown)}>
                                 <i className="fas fa-bell"></i>
-                                <span style={{ position: 'absolute', top: '8px', right: '10px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '1.5px solid var(--maroon-primary)' }}></span>
+                                <span style={{ position: 'absolute', top: '8px', right: '10px', width: '8px', height: '8px', backgroundColor: '#ef4444', borderRadius: '50%', border: '1.5px solid white' }}></span>
                             </div>
 
                             {/* DROPDOWN NOTIFIKASI */}
                             {showNotifDropdown && (
-                                <div className="profile-dropdown-menu" style={{ right: '-60px', width: '320px', padding: 0 }}>
+                                <div className="profile-dropdown-menu" style={{ width: '320px', padding: 0 }}>
                                     <div className="dropdown-header" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: '#1e293b' }}>Notifikasi</h4>
                                         <span style={{ fontSize: '12px', color: '#3b82f6', cursor: 'pointer', fontWeight: '500' }}>Tandai sudah dibaca</span>
@@ -286,17 +328,13 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                         <div style={{ position: 'relative' }} ref={dropdownRef}>
                             <div className="top-bar-profile" onClick={() => setShowDropdown(!showDropdown)}>
                             {sessionData.avatar ? (
-                                <PrivateImage url={sessionData.avatar} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.2)' }} />
+                                <PrivateImage url={sessionData.avatar} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,0,0,0.1)' }} />
                             ) : (
-                                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.2)', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
+                                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.1)', color: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
                                     {sessionData.fullName ? sessionData.fullName.charAt(0).toUpperCase() : 'U'}
                                 </div>
                             )}
-                            <div className="profile-text-desktop" style={{ paddingRight: '8px' }}>
-                                <div style={{ fontSize: '14px', fontWeight: '600', lineHeight: '1.2' }}>{sessionData.fullName}</div>
-                                <div style={{ fontSize: '11px', opacity: 0.8 }}>{sessionData.role}</div>
-                            </div>
-                            <i className="fas fa-chevron-down" style={{ fontSize: '12px', opacity: 0.8, marginRight: '8px' }}></i>
+                            <i className="fas fa-chevron-down" style={{ fontSize: '12px', opacity: 0.8, marginRight: '4px' }}></i>
                         </div>
 
                         {/* DROPDOWN KOTAK PROFIL */}
@@ -327,10 +365,10 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                 {/* AREA KONTEN (Tampilan Overview) */}
                 <div className="content-scroll-area">
                     {activeMenu === 'dashboard' && <DashboardUI />}
-                    {activeMenu === 'crew' && <CrewForm crewList={crewList} isLoadingData={isLoadingData} fetchCrewData={fetchCrewData} setPreviewImage={setPreviewImage} />}
-                    {activeMenu === 'loading' && <LoadingForm sessionData={sessionData} />}
-                    {activeMenu === 'inventory' && <InventoryForm />}
-                    {activeMenu === 'history_event' && <HistoryEventForm crewList={crewList} fetchCrewData={fetchCrewData} />}
+                    {activeMenu === 'crew' && <CrewForm crewList={crewList} isLoadingData={isLoadingData} fetchCrewData={fetchCrewData} setPreviewImage={setPreviewImage} searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
+                    {activeMenu === 'loading' && <LoadingForm sessionData={sessionData} searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
+                    {activeMenu === 'inventory' && <InventoryForm searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
+                    {activeMenu === 'history_event' && <HistoryEventForm crewList={crewList} fetchCrewData={fetchCrewData} searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
                     {activeMenu === 'approval' && <ApprovalForm />}
                     {activeMenu === 'settings' && <Settings sessionData={sessionData} updateSession={updateSession} />}
                 </div>
@@ -380,6 +418,25 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                         </div>
                     </div>
                 )}
+
+                {/* FAB (Floating Action Button) */}
+                {fabConfig && (
+                    <div className="fab-container">
+                        {isFabOpen && <div className="fab-overlay" onClick={() => setIsFabOpen(false)} />}
+                        <div className={`fab-menu ${isFabOpen ? 'open' : ''}`}>
+                            {fabConfig.actions.map((action, idx) => (
+                                <button key={idx} className="fab-menu-item" onClick={() => { action.handler(); setIsFabOpen(false); }}>
+                                    <span className="fab-menu-label">{action.label}</span>
+                                    <span className="fab-menu-icon"><i className={action.icon} /></span>
+                                </button>
+                            ))}
+                        </div>
+                        <button className="fab-main" onClick={() => setIsFabOpen(!isFabOpen)}>
+                            <i className={`fas ${isFabOpen ? 'fa-times' : 'fa-plus'}`} />
+                        </button>
+                    </div>
+                )}
+
 
             </div>
         </div>

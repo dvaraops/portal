@@ -1,6 +1,6 @@
 const { useState, useEffect, useRef } = React;
 
-const InventoryForm = () => {
+const InventoryForm = ({ searchQuery, fabAction, clearFabAction }) => {
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [viewMode, setViewMode] = useState('grid');
@@ -20,6 +20,13 @@ const InventoryForm = () => {
     const formRef = useRef(null);
 
     useEffect(() => { fetchInventory(); }, []);
+
+    useEffect(() => {
+        if (fabAction === 'add') {
+            handleAddNew();
+            if (clearFabAction) clearFabAction();
+        }
+    }, [fabAction]);
     
     const fetchInventory = async () => {
         setIsLoading(true);
@@ -142,18 +149,12 @@ const InventoryForm = () => {
     };
 
     return (
-        <div className="animate-[fadeIn_0.3s_ease] font-sans pb-10">
+        <div className="w-full pb-10 font-sans">
             <style>{`
                 .hide-spinners::-webkit-inner-spin-button,
                 .hide-spinners::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
                 .hide-spinners { -moz-appearance: textfield; }
             `}</style>
-
-            <div className="flex justify-end mb-6">
-                <button onClick={openAddModal} className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-emerald-500/20 flex items-center gap-2">
-                    <i className="fas fa-plus"></i> Add Item
-                </button>
-            </div>
 
             <div className="flex flex-wrap gap-3 mb-6 items-center">
                 <div className="flex-1 min-w-[220px] relative">

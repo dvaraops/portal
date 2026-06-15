@@ -23,7 +23,7 @@ const formatDateHTML = (dateStr) => {
     return dateStr;
 };
 
-const HistoryEventForm = ({ crewList, fetchCrewData }) => {
+const HistoryEventForm = ({ crewList, fetchCrewData, searchQuery, fabAction, clearFabAction }) => {
     const [eventName, setEventName] = useState('');
     const [eventDate, setEventDate] = useState('');
     
@@ -53,7 +53,16 @@ const HistoryEventForm = ({ crewList, fetchCrewData }) => {
 
     const [roleOptions, setRoleOptions] = useState([]);
 
+    const [showCreateModal, setShowCreateModal] = useState(false);
+
     useEffect(() => { fetchLogs(); fetchMasterRoles(); loadLocations(); }, []);
+
+    useEffect(() => {
+        if (fabAction === 'add') {
+            setShowCreateModal(true);
+            if (clearFabAction) clearFabAction();
+        }
+    }, [fabAction]);
 
     const fetchMasterRoles = async () => {
         try {
@@ -159,6 +168,7 @@ const HistoryEventForm = ({ crewList, fetchCrewData }) => {
                 
                 setEventName(''); setEventDate(''); 
                 setSessions([{ id: Date.now(), sesiName: '', shiftDate: '', callTime: '', targetEndTime: '', crews: [{ fullName: '', role: '' }] }]);
+                setShowCreateModal(false);
                 
                 if (fetchCrewData) fetchCrewData(); 
                 fetchLogs(); 
@@ -254,11 +264,24 @@ const HistoryEventForm = ({ crewList, fetchCrewData }) => {
         }
     };
 
+    const displayedLogs = logs.filter(group => {
+        if (!searchQuery) return true;
+        return (group.eventName || "").toLowerCase().includes(searchQuery.toLowerCase());
+    });
+
     return (
         <div className="animate-[fadeIn_0.3s_ease] font-sans pb-10">
 
             {/* --- 1. FORM CREATE --- */}
-            <form onSubmit={handleSubmit} className="mb-10">
+            {showCreateModal && (
+                <div className="event-create-modal-overlay">
+                    <div className="event-create-modal">
+                        <div className="modal-header">
+                            <h3>Tambah Event Baru</h3>
+                            <button type="button" onClick={() => setShowCreateModal(false)}>×</button>
+                        </div>
+                        <div className="modal-body scrollable">
+                            <form onSubmit={handleSubmit} className="mb-0">
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-6 shadow-sm">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                         <div>
@@ -358,10 +381,14 @@ const HistoryEventForm = ({ crewList, fetchCrewData }) => {
                         {isSubmitting ? 'MENYIMPAN EVENT...' : 'SIMPAN EVENT & SHIFT'}
                     </button>
                 </div>
-            </form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* --- 2. TABEL ARSIP --- */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
                 <div className="mb-4 text-sm font-bold text-slate-500">Arsip Event (50 Terbaru)</div>
                 <div className="overflow-x-auto border border-slate-200 rounded-xl">
                     <table className="w-full text-left border-collapse min-w-[700px]">
@@ -391,7 +418,7 @@ const HistoryEventForm = ({ crewList, fetchCrewData }) => {
                                     </td>
                                 </tr>
                             ) : (
-                                logs.map((group, idx) => (
+                                displayedLogs.map((group, idx) => (
                                     <tr key={idx} className="border-b border-slate-200 hover:bg-slate-50/50 transition-colors">
                                         <td className="p-4 text-sm text-slate-800 font-bold align-top">
                                             {group.eventName}

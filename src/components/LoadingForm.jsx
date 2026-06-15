@@ -1,6 +1,6 @@
 const { useState, useEffect, useRef } = React;
 
-const LoadingForm = ({ sessionData }) => {
+const LoadingForm = ({ sessionData, searchQuery, fabAction, clearFabAction }) => {
     const [forms, setForms] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -36,6 +36,14 @@ const LoadingForm = ({ sessionData }) => {
     };
 
     useEffect(() => { fetchFormList(); }, []);
+
+    useEffect(() => {
+        if (fabAction === 'add') {
+            resetForm();
+            setShowModal(true);
+            if (clearFabAction) clearFabAction();
+        }
+    }, [fabAction]);
 
     const fetchFormList = async () => {
         setIsLoading(true);
@@ -231,13 +239,13 @@ const LoadingForm = ({ sessionData }) => {
         });
     };
 
+    const displayedForms = forms.filter(f => {
+        if (!searchQuery) return true;
+        return (f.fileName && f.fileName.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
+
     return (
-        <div className="animate-[fadeIn_0.3s_ease] font-sans pb-10">
-            <div className="flex justify-end items-center mb-6 flex-wrap gap-3">
-                <button onClick={() => { resetForm(); setShowModal(true); }} className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md shadow-emerald-500/20 transition-all active:scale-95 flex items-center gap-2">
-                    <i className="fas fa-plus"></i> Add Loading Form
-                </button>
-            </div>
+        <div className="w-full pb-10 font-sans">
 
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
@@ -267,7 +275,7 @@ const LoadingForm = ({ sessionData }) => {
                                     </td>
                                 </tr>
                             ) : (
-                                forms.map((f, i) => (
+                                displayedForms.map((f, i) => (
                                     <tr key={i} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
                                         <td className="p-4 font-bold text-slate-800 text-sm">{f.fileName}</td>
                                         <td className="p-4 text-slate-500 text-sm font-medium">{f.date}</td>

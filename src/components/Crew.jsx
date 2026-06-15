@@ -1,6 +1,6 @@
 const { useState, useEffect } = React;
 
-const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage }) => {
+const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage, searchQuery, fabAction, clearFabAction }) => {
     const [crewHistoryInfo, setCrewHistoryInfo] = useState([]);
     const [isLoadingHistory, setIsLoadingHistory] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -11,6 +11,16 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage }) =
     const [isSaving, setIsSaving] = useState(false);
     const [fileName, setFileName] = useState('');
     const [fileData, setFileData] = useState({ base64: '', mime: '' });
+    
+    useEffect(() => {
+        if (fabAction === 'add') {
+            setShowAddModal(true);
+            if (clearFabAction) clearFabAction();
+        } else if (fabAction === 'secondary') {
+            openWABlastModal();
+            if (clearFabAction) clearFabAction();
+        }
+    }, [fabAction]);
     
     const [showWABlastModal, setShowWABlastModal] = useState(false);
     const [selectedCrewsForWA, setSelectedCrewsForWA] = useState([]);
@@ -151,17 +161,19 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage }) =
     // Helper untuk Modal UI (Background Overlay)
     const modalStyle = { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1050 };
 
+    const displayedCrewList = crewList.filter(crew => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+            (crew.FullName && crew.FullName.toLowerCase().includes(q)) ||
+            (crew.ShortName && crew.ShortName.toLowerCase().includes(q)) ||
+            (crew.IDCrew && crew.IDCrew.toLowerCase().includes(q)) ||
+            (crew.NoHP && crew.NoHP.toLowerCase().includes(q))
+        );
+    });
+
     return (
         <div className="w-full pb-10 font-sans">
-            {/* Header Section */}
-            <div className="flex justify-end mb-6 gap-3 flex-wrap">
-                <button onClick={openWABlastModal} className="px-5 py-2.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 font-bold rounded-xl transition-all duration-300 flex items-center gap-2 shadow-sm border border-emerald-100">
-                    <i className="fab fa-whatsapp text-lg"></i> Kirim ID
-                </button>
-                <button onClick={() => setShowAddModal(true)} className="px-5 py-2.5 bg-maroon-primary hover:bg-maroon-dark text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-maroon-primary/20 flex items-center gap-2">
-                    <i className="fas fa-plus"></i> Tambah Crew
-                </button>
-            </div>
 
             {/* Table Section */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -187,7 +199,7 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage }) =
                                         </div>
                                     </td>
                                 </tr>
-                            ) : crewList.length === 0 ? (
+                            ) : displayedCrewList.length === 0 ? (
                                 <tr>
                                     <td colSpan="6" className="text-center py-16">
                                         <div className="flex flex-col items-center justify-center text-slate-400">
@@ -197,7 +209,7 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage }) =
                                     </td>
                                 </tr>
                             ) : (
-                                crewList.map((crew, idx) => (
+                                displayedCrewList.map((crew, idx) => (
                                     <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
                                         <td className="p-4">
                                             <span className="font-bold text-slate-800 bg-slate-100 px-2.5 py-1 rounded-md text-xs">{crew.IDCrew || '-'}</span>
