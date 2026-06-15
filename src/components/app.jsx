@@ -4,13 +4,41 @@ const App = () => {
 
     // Cek Session (Keep Login) di localStorage
     React.useEffect(() => {
-        const session = localStorage.getItem('dvara_session');
-        if (session) setUser(JSON.parse(session));
+        const checkSession = () => {
+            const session = localStorage.getItem('dvara_session');
+            if (session) {
+                const parsedSession = JSON.parse(session);
+                // 1 Hour = 3600000 ms
+                if (parsedSession.loginTime && (Date.now() - parsedSession.loginTime > 3600000)) {
+                    localStorage.removeItem('dvara_session');
+                    setUser(null);
+                    return false;
+                } else {
+                    setUser(parsedSession);
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        const isActive = checkSession();
+        
+        const interval = setInterval(() => {
+            if (localStorage.getItem('dvara_session')) {
+                const isValid = checkSession();
+                if (!isValid) {
+                    window.location.reload(); // Force reload if session expired while app is open
+                }
+            }
+        }, 60000); // Check every minute
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleLogin = (userData) => {
-        localStorage.setItem('dvara_session', JSON.stringify(userData));
-        setUser(userData);
+        const sessionDataWithTime = { ...userData, loginTime: Date.now() };
+        localStorage.setItem('dvara_session', JSON.stringify(sessionDataWithTime));
+        setUser(sessionDataWithTime);
     };
 
     // Fungsi LOGOUT untuk hapus session & balik ke halaman Auth

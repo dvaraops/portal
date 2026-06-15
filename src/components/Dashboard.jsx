@@ -242,7 +242,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                             <i className="fas fa-bars"></i>
                         </button>
                         
-                        <div className="flex-1 overflow-hidden">
+                        <div className="flex-1 min-w-0 overflow-hidden">
                             <h2 className="topbar-title truncate">
                                 {activeMenu === 'dashboard' ? 'Dashboard Overview' : 
                                  activeMenu === 'crew' ? 'Data Crew Part-time' : 
@@ -251,14 +251,6 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                                  activeMenu === 'history_event' ? 'History Event Log' : 
                                  activeMenu === 'settings' ? 'Settings & Preferences' : 'Overtime Approval'}
                             </h2>
-                            <p className="topbar-subtitle truncate">
-                                {activeMenu === 'dashboard' ? 'Ringkasan operasional DVARA hari ini.' : 
-                                 activeMenu === 'crew' ? 'Klik tombol "Kirim ID" untuk sebar absen via WA.' : 
-                                 activeMenu === 'loading' ? 'Daftar surat ijin keluar/masuk barang yang telah dibuat.' : 
-                                 activeMenu === 'inventory' ? 'Manajemen stok inventaris DVARA.' : 
-                                 activeMenu === 'history_event' ? 'Catat event, atur lokasi GPS, dan bagi crew.' : 
-                                 activeMenu === 'settings' ? 'Konfigurasi akun dan sistem.' : 'Setujui atau tolak pengajuan lembur crew.'}
-                            </p>
                         </div>
                     </div>
 
@@ -331,9 +323,9 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                             <div className="top-bar-profile" onClick={() => setShowDropdown(!showDropdown)}>
                             <div className="flex gap-2 items-center">
                                 {sessionData.avatar ? (
-                                    <PrivateImage url={sessionData.avatar} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,0,0,0.1)' }} />
+                                    <PrivateImage url={sessionData.avatar} style={{ flexShrink: 0, width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,0,0,0.1)' }} />
                                 ) : (
-                                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.1)', color: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
+                                    <div style={{ flexShrink: 0, width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.1)', color: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
                                         {sessionData.fullName ? sessionData.fullName.charAt(0).toUpperCase() : 'U'}
                                     </div>
                                 )}
