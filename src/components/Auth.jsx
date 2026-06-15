@@ -234,7 +234,7 @@ const Auth = ({ onLoginSuccess }) => {
                                     </div>
 
                                     <button type="submit" className="w-full py-3 bg-maroon-primary hover:bg-maroon-dark text-white font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-maroon-primary/20 flex justify-center items-center gap-2 font-sans" disabled={loginLoading}>
-                                        {loginLoading ? <><div className="modern-spinner w-4 h-4 border-2 border-t-white"></div> Memuat...</> : 'Masuk ke Portal'}
+                                        {loginLoading ? <><div className="modern-spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#ffffff', margin: 0 }}></div> Memuat...</> : 'Masuk ke Portal'}
                                     </button>
                                 </form>
                             )}

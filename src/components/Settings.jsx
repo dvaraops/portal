@@ -1,7 +1,6 @@
 const { useState, useEffect } = React;
 
-const Settings = ({ sessionData, updateSession }) => {
-    const [searchQuery, setSearchQuery] = useState("");
+const Settings = ({ sessionData, updateSession, searchQuery = "" }) => {
     const [activeView, setActiveView] = useState("main"); // 'main', 'account', 'notifications', 'appearance', 'help', 'about'
 
     const menuItems = [
@@ -41,19 +40,7 @@ const Settings = ({ sessionData, updateSession }) => {
     return (
         <div className="animate-[fadeIn_0.3s_ease] flex flex-col h-full font-sans">
             
-            {/* Search Bar Full Width */}
-            <div className="mb-6 sticky top-0 z-10 bg-[#f4f6f9] pb-4 -mt-4 pt-4">
-                <div className="relative">
-                    <i className="fas fa-search absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"></i>
-                    <input 
-                        type="text" 
-                        placeholder="Search for a setting..." 
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full py-3 pr-4 pl-12 rounded-xl border border-slate-200 bg-white shadow-sm text-[15px] text-slate-700 outline-none focus:ring-1 focus:ring-maroon-primary focus:border-maroon-primary transition-all"
-                    />
-                </div>
-            </div>
+
 
             <div className="flex flex-1 gap-6 relative">
                 

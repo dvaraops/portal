@@ -9,7 +9,6 @@ const InventoryForm = ({ searchQuery, fabAction, clearFabAction }) => {
     const [previewImage, setPreviewImage] = useState(null);
     
     const [activeTab, setActiveTab] = useState('Semua');
-    const [searchQuery, setSearchQuery] = useState('');
     const [filterKondisi, setFilterKondisi] = useState('Semua');
     const [filterStok, setFilterStok] = useState('Semua');
 
@@ -156,11 +155,7 @@ const InventoryForm = ({ searchQuery, fabAction, clearFabAction }) => {
                 .hide-spinners { -moz-appearance: textfield; }
             `}</style>
 
-            <div className="flex flex-wrap gap-3 mb-6 items-center">
-                <div className="flex-1 min-w-[220px] relative">
-                    <i className="fas fa-search absolute top-3.5 left-4 text-slate-400"></i>
-                    <input type="text" placeholder="Cari barang..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl outline-none focus:ring-1 focus:ring-maroon-primary transition-all text-sm text-slate-700 shadow-sm" />
-                </div>
+            <div className="flex flex-wrap gap-3 mb-6 items-center justify-end">
                 
                 <div className="flex flex-wrap gap-2">
                     <select value={filterKondisi} onChange={(e) => setFilterKondisi(e.target.value)} className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl outline-none focus:ring-1 focus:ring-maroon-primary text-slate-600 text-sm font-semibold cursor-pointer shadow-sm transition-all appearance-none pr-8 bg-[url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBoZWlnaHQ9IjIwIiBzdHJva2U9IiM5NGEzYjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSIvPjwvc3ZnPg==')] bg-no-repeat bg-[position:right_0.5rem_center] bg-[length:1.25em_1.25em]">

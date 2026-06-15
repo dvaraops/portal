@@ -171,7 +171,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
         }
     };
 
-    const toggleSidebar = () => { setIsSidebarCollapsed(!isSidebarCollapsed); };
+    const toggleSidebar = () => { if(window.innerWidth > 768) setIsSidebarCollapsed(!isSidebarCollapsed); };
 
     const getSearchPlaceholder = () => {
         if(activeMenu === 'dashboard') return "Search menu, event, crew...";
@@ -242,8 +242,8 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                             <i className="fas fa-bars"></i>
                         </button>
                         
-                        <div>
-                            <h2 className="topbar-title">
+                        <div className="flex-1 overflow-hidden">
+                            <h2 className="topbar-title truncate">
                                 {activeMenu === 'dashboard' ? 'Dashboard Overview' : 
                                  activeMenu === 'crew' ? 'Data Crew Part-time' : 
                                  activeMenu === 'loading' ? 'Loading Form' : 
@@ -251,7 +251,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                                  activeMenu === 'history_event' ? 'History Event Log' : 
                                  activeMenu === 'settings' ? 'Settings & Preferences' : 'Overtime Approval'}
                             </h2>
-                            <p className="topbar-subtitle">
+                            <p className="topbar-subtitle truncate">
                                 {activeMenu === 'dashboard' ? 'Ringkasan operasional DVARA hari ini.' : 
                                  activeMenu === 'crew' ? 'Klik tombol "Kirim ID" untuk sebar absen via WA.' : 
                                  activeMenu === 'loading' ? 'Daftar surat ijin keluar/masuk barang yang telah dibuat.' : 
@@ -262,15 +262,17 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                         </div>
                     </div>
 
-                    <div className="topbar-center hidden md:block">
-                        <div className="topbar-search">
-                            <i className="fas fa-search" />
-                            <input 
-                                placeholder={getSearchPlaceholder()}
-                                value={topbarSearch}
-                                onChange={e => setTopbarSearch(e.target.value)}
-                            />
-                        </div>
+                    <div className="topbar-center hidden md:block w-full max-w-[400px]">
+                        {activeMenu !== 'dashboard' && (
+                            <div className="topbar-search">
+                                <i className="fas fa-search" />
+                                <input 
+                                    placeholder={getSearchPlaceholder()}
+                                    value={topbarSearch}
+                                    onChange={e => setTopbarSearch(e.target.value)}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="top-bar-actions">
@@ -327,14 +329,20 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                         {/* Profile Area */}
                         <div style={{ position: 'relative' }} ref={dropdownRef}>
                             <div className="top-bar-profile" onClick={() => setShowDropdown(!showDropdown)}>
-                            {sessionData.avatar ? (
-                                <PrivateImage url={sessionData.avatar} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,0,0,0.1)' }} />
-                            ) : (
-                                <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.1)', color: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
-                                    {sessionData.fullName ? sessionData.fullName.charAt(0).toUpperCase() : 'U'}
+                            <div className="flex gap-2 items-center">
+                                {sessionData.avatar ? (
+                                    <PrivateImage url={sessionData.avatar} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,0,0,0.1)' }} />
+                                ) : (
+                                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.1)', color: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', fontWeight: 'bold', fontSize: '15px' }}>
+                                        {sessionData.fullName ? sessionData.fullName.charAt(0).toUpperCase() : 'U'}
+                                    </div>
+                                )}
+                                <div className="hidden md:flex flex-col items-start mr-1 ml-1 profile-text-desktop">
+                                    <span className="text-sm font-bold text-slate-800 leading-tight">{sessionData.fullName}</span>
+                                    <span className="text-[11px] text-slate-500 font-semibold">{sessionData.role}</span>
                                 </div>
-                            )}
-                            <i className="fas fa-chevron-down" style={{ fontSize: '12px', opacity: 0.8, marginRight: '4px' }}></i>
+                                <i className="fas fa-chevron-down" style={{ fontSize: '12px', opacity: 0.8, marginRight: '4px' }}></i>
+                            </div>
                         </div>
 
                         {/* DROPDOWN KOTAK PROFIL */}
@@ -370,7 +378,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                     {activeMenu === 'inventory' && <InventoryForm searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
                     {activeMenu === 'history_event' && <HistoryEventForm crewList={crewList} fetchCrewData={fetchCrewData} searchQuery={topbarSearch} fabAction={fabAction} clearFabAction={clearFabAction} />}
                     {activeMenu === 'approval' && <ApprovalForm />}
-                    {activeMenu === 'settings' && <Settings sessionData={sessionData} updateSession={updateSession} />}
+                    {activeMenu === 'settings' && <Settings sessionData={sessionData} updateSession={updateSession} searchQuery={topbarSearch} />}
                 </div>
 
                 {/* MODAL POPUP EDIT PROFILE */}
@@ -421,19 +429,22 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
 
                 {/* FAB (Floating Action Button) */}
                 {fabConfig && (
-                    <div className="fab-container">
-                        {isFabOpen && <div className="fab-overlay" onClick={() => setIsFabOpen(false)} />}
-                        <div className={`fab-menu ${isFabOpen ? 'open' : ''}`}>
-                            {fabConfig.actions.map((action, idx) => (
-                                <button key={idx} className="fab-menu-item" onClick={() => { action.handler(); setIsFabOpen(false); }}>
-                                    <span className="fab-menu-label">{action.label}</span>
-                                    <span className="fab-menu-icon"><i className={action.icon} /></span>
-                                </button>
-                            ))}
-                        </div>
-                        <button className="fab-main" onClick={() => setIsFabOpen(!isFabOpen)}>
-                            <i className={`fas ${isFabOpen ? 'fa-times' : 'fa-plus'}`} />
+                    <div className={`fab js-fab ${isFabOpen ? 'is-expanded' : ''}`} style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1050 }}>
+                        {isFabOpen && <div className="fab-overlay" onClick={() => setIsFabOpen(false)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'transparent', zIndex: -1 }} />}
+                        
+                        <button className="fab__button fab__button--primary js-toggle" onClick={() => setIsFabOpen(!isFabOpen)}>
+                            <span className="fab__button--primary__icon"></span>
                         </button>
+
+                        {fabConfig.actions.map((action, idx) => {
+                            // Convert font awesome icon class to the provided SVG logic, or just keep using font awesome inside the button.
+                            // The user's CSS uses ::before with data-label for the label.
+                            return (
+                                <button key={idx} className="fab__button fab__button--secondary" data-label={action.label} onClick={() => { action.handler(); setIsFabOpen(false); }}>
+                                    <i className={`fas ${action.icon}`} style={{ fontSize: '18px', color: '#45494E' }}></i>
+                                </button>
+                            );
+                        })}
                     </div>
                 )}
 
