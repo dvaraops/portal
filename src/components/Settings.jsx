@@ -44,33 +44,35 @@ const Settings = ({ sessionData, updateSession, searchQuery = "" }) => {
 
             <div className="flex flex-1 gap-6 relative">
                 
-                {/* Menu List Area (Shrinks to 40% if activeView !== 'main') */}
-                <div className={`flex flex-col transition-all duration-300 ease-in-out ${activeView === 'main' ? 'w-full' : 'w-[40%] shrink-0'}`}>
+                {/* Menu List Area (Shrinks to icon-only if activeView !== 'main') */}
+                <div className={`flex flex-col transition-all duration-300 ease-in-out ${activeView === 'main' ? 'w-full' : 'w-[72px] shrink-0'}`}>
                     {filteredMenu.length > 0 ? filteredMenu.map((item, index) => (
                         <div key={item.id}>
                             <div 
                                 onClick={() => setActiveView(item.id)}
                                 className={`flex items-center px-3 py-4 cursor-pointer transition-colors rounded-xl border ${
                                     activeView === item.id 
-                                        ? 'bg-slate-100 border-slate-200' 
+                                        ? 'bg-slate-100 border-slate-200 justify-center' 
                                         : 'bg-transparent border-transparent hover:bg-slate-50'
                                 }`}
+                                title={item.title}
                             >
-                                <div className={`w-10 h-10 rounded-full flex justify-center items-center shrink-0 mr-4 transition-all ${
+                                <div className={`w-10 h-10 rounded-full flex justify-center items-center shrink-0 transition-all ${
                                     activeView === item.id ? 'bg-maroon-primary text-white shadow-sm' : 'bg-slate-100 text-maroon-primary'
-                                }`}>
+                                } ${activeView === 'main' ? 'mr-4' : ''}`}>
                                     <i className={`fas ${item.icon}`}></i>
                                 </div>
-                                <div className="flex-1 overflow-hidden pr-2">
-                                    <div className="text-[15px] font-bold text-slate-800 truncate">{item.title}</div>
-                                    <div className="text-[13px] text-slate-500 mt-0.5 truncate">{item.subtitle}</div>
-                                </div>
                                 
-                                {/* Hide Chevron when sub-setting is opened */}
                                 {activeView === 'main' && (
-                                    <div className="text-slate-400 text-sm pl-2">
-                                        <i className="fas fa-chevron-right"></i>
-                                    </div>
+                                    <>
+                                        <div className="flex-1 overflow-hidden pr-2">
+                                            <div className="text-[15px] font-bold text-slate-800 truncate">{item.title}</div>
+                                            <div className="text-[13px] text-slate-500 mt-0.5 truncate">{item.subtitle}</div>
+                                        </div>
+                                        <div className="text-slate-400 text-sm pl-2">
+                                            <i className="fas fa-chevron-right"></i>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                             {index < filteredMenu.length - 1 && activeView === 'main' && (

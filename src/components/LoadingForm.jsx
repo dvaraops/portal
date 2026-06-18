@@ -305,15 +305,15 @@ const LoadingForm = ({ sessionData, searchQuery, fabAction, clearFabAction }) =>
                 <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-sans">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative animate-[settingsSlideIn_0.3s_ease-out]">
                         
-                        <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
-                            <h3 className="m-0 text-slate-800 font-bold font-heading text-lg">Buat Surat Loading Baru</h3>
-                            <button type="button" onClick={() => setShowModal(false)} className="text-slate-400 hover:text-red-500 transition-colors text-xl">
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
+                        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col h-full min-h-0">
+                            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
+                                <h3 className="m-0 text-slate-800 font-bold font-heading text-lg">Buat Surat Loading Baru</h3>
+                                <button type="button" onClick={() => setShowModal(false)} className="text-slate-400 hover:text-red-500 transition-colors text-xl">
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
 
-                        <div ref={modalContentRef} className="p-6 overflow-y-auto">
-                            <form ref={formRef} onSubmit={handleSubmit}>
+                            <div ref={modalContentRef} className="p-6 overflow-y-auto">
                                 
                                 {/* KOP FORM */}
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-5 bg-white border border-slate-200 rounded-2xl mb-6 shadow-sm">
@@ -461,14 +461,15 @@ const LoadingForm = ({ sessionData, searchQuery, fabAction, clearFabAction }) =>
                                     )}
                                 </div>
 
-                                <div className="flex gap-3 pt-4">
-                                    <button type="button" onClick={() => setShowModal(false)} disabled={isGenerating} className="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-colors">Batal</button>
-                                    <button type="submit" disabled={isGenerating} className="flex-[2] py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md shadow-emerald-500/20 transition-all active:scale-95 disabled:opacity-50">
-                                        {isGenerating ? <><div className="modern-spinner w-4 h-4 border-2 border-t-white inline-block align-middle mr-2"></div>Memproses PDF...</> : 'Generate PDF & Simpan'}
-                                    </button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 shrink-0">
+                                <button type="button" className="px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold rounded-xl transition-colors text-sm" onClick={() => setShowModal(false)} disabled={isGenerating}>Batal</button>
+                                <button type="submit" disabled={isGenerating} className="px-6 py-2.5 bg-maroon-primary hover:bg-maroon-dark text-white font-bold rounded-xl transition-all shadow-md shadow-maroon-primary/20 active:scale-95 disabled:opacity-50 text-sm flex items-center justify-center gap-2">
+                                    {isGenerating ? <><div className="modern-spinner w-4 h-4 border-2 border-t-white"></div> Memproses...</> : 'Generate PDF & Simpan'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

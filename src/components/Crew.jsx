@@ -319,7 +319,7 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage, sea
             {showAddModal && (
                 <div className="fixed inset-0 z-[1050] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-sans">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden relative animate-[settingsSlideIn_0.3s_ease-out] flex flex-col max-h-[90vh]">
-                        <form onSubmit={handleAddCrewSubmit} className="flex flex-col h-full">
+                        <form onSubmit={handleAddCrewSubmit} className="flex flex-col h-full min-h-0">
                             <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
                                 <h3 className="font-bold text-maroon-primary text-lg m-0 font-heading tracking-wide">Tambah Crew Part-time</h3>
                                 <button type="button" className="text-slate-400 hover:text-red-500 transition-colors text-xl" onClick={() => setShowAddModal(false)}>
@@ -378,7 +378,7 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage, sea
             {showEditModal && selectedCrew && (
                 <div className="fixed inset-0 z-[1050] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-sans">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden relative animate-[settingsSlideIn_0.3s_ease-out] flex flex-col max-h-[90vh]">
-                        <form onSubmit={handleEditCrewSubmit} className="flex flex-col h-full">
+                        <form onSubmit={handleEditCrewSubmit} className="flex flex-col h-full min-h-0">
                             <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
                                 <h3 className="font-bold text-slate-800 text-lg m-0 font-heading tracking-wide">Edit Data Crew</h3>
                                 <button type="button" className="text-slate-400 hover:text-red-500 transition-colors text-xl" onClick={() => {setShowEditModal(false); setSelectedCrew(null);}}>
