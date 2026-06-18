@@ -124,10 +124,11 @@ h6 {
     .sidebar.collapsed .sidebar-header:hover .sidebar-logo {
         opacity: 0.2;
     }
+} /* Added missing closing brace for .sidebar-logo */
 
-    /* 2. TULISAN DVARA PORTAL (DIPERBESAR & ANIMASI SLIDE) */
-    .sidebar-title {
-        font-family: var(--font-heading);
+/* 2. TULISAN DVARA PORTAL (DIPERBESAR & ANIMASI SLIDE) */
+.sidebar-title {
+    font-family: var(--font-heading);
         font-size: 22px;
         /* Ukuran diperbesar */
         font-weight: 700;
