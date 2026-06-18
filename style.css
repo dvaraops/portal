@@ -297,6 +297,7 @@ h6 {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 24px; /* Added gap to prevent elements from touching */
         flex-shrink: 0;
         border-bottom: 1px solid #e9ecef;
         margin: 0;
@@ -594,6 +595,16 @@ h6 {
         .sidebar-overlay.show {
             display: block;
             opacity: 1;
+        }
+
+        /* Dropdown mengikuti layar HP */
+        .profile-dropdown-menu {
+            position: fixed !important;
+            top: 70px !important;
+            left: 16px !important;
+            right: 16px !important;
+            width: auto !important;
+            max-width: none !important;
         }
     }
 
