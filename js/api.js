@@ -5,6 +5,10 @@ async function dvaraFetch(action, data) {
     try {
         const response = await fetch(GAS_URL, {
             method: 'POST',
+            redirect: 'follow',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
             body: JSON.stringify({ action: action, ...data })
         });
 

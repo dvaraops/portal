@@ -377,7 +377,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
                 {showSettingsModal && (
                     <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-sans animate-[fadeIn_0.2s_ease-out]">
                         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col relative animate-[settingsSlideIn_0.3s_ease-out]">
-                            <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center rounded-t-2xl shrink-0">
+                            <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
                                 <h3 className="m-0 text-maroon-primary font-bold font-heading text-lg">Edit Profile</h3>
                                 <button type="button" onClick={() => { setShowSettingsModal(false); setCropImage(null); if(cropperInstance) cropperInstance.destroy(); }} className="text-slate-400 hover:text-red-500 transition-colors text-xl">
                                     <i className="fas fa-times"></i>
@@ -421,7 +421,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
 
                 {/* FAB (Floating Action Button) */}
                 {fabConfig && (
-                    <div className={`fab js-fab ${isFabOpen ? 'is-expanded' : ''}`} style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1050 }}>
+                    <div className={`fab js-fab ${isFabOpen ? 'is-expanded' : ''}`} style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1030 }}>
                         {isFabOpen && <div className="fab-overlay" onClick={() => setIsFabOpen(false)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'transparent', zIndex: -1 }} />}
                         
                         <button className="fab__button fab__button--primary js-toggle" onClick={() => setIsFabOpen(!isFabOpen)}>

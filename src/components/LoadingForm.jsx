@@ -305,7 +305,7 @@ const LoadingForm = ({ sessionData, searchQuery, fabAction, clearFabAction }) =>
                 <div className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-sans">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative animate-[settingsSlideIn_0.3s_ease-out]">
                         
-                        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 shrink-0 flex justify-between items-center rounded-t-2xl">
+                        <div className="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
                             <h3 className="m-0 text-slate-800 font-bold font-heading text-lg">Buat Surat Loading Baru</h3>
                             <button type="button" onClick={() => setShowModal(false)} className="text-slate-400 hover:text-red-500 transition-colors text-xl">
                                 <i className="fas fa-times"></i>

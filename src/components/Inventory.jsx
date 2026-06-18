@@ -22,7 +22,7 @@ const InventoryForm = ({ searchQuery, fabAction, clearFabAction }) => {
 
     useEffect(() => {
         if (fabAction === 'add') {
-            handleAddNew();
+            openAddModal();
             if (clearFabAction) clearFabAction();
         }
     }, [fabAction]);
