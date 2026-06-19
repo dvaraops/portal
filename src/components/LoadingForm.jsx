@@ -460,8 +460,6 @@ const LoadingForm = ({ sessionData, searchQuery, fabAction, clearFabAction }) =>
                                         </label>
                                     )}
                                 </div>
-
-                                </div>
                             </div>
                             <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 shrink-0">
                                 <button type="button" className="px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold rounded-xl transition-colors text-sm" onClick={() => setShowModal(false)} disabled={isGenerating}>Batal</button>

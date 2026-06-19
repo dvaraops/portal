@@ -339,7 +339,7 @@ const Dashboard = ({ sessionData, updateSession, onLogout }) => {
 
                         {/* DROPDOWN KOTAK PROFIL */}
                         {showDropdown && (
-                            <div className="profile-dropdown-menu">
+                            <div className="profile-dropdown-menu" id="profile-dropdown-override">
                                 <div className="dropdown-header">
                                     <div style={{ fontWeight: '600', fontSize: '14px', marginBottom: '2px' }}>{sessionData.username}</div>
                                     <div style={{ fontSize: '12px', color: '#64748b' }}>{sessionData.email || 'No email registered'}</div>

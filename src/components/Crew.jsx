@@ -168,7 +168,7 @@ const CrewForm = ({ crewList, isLoadingData, fetchCrewData, setPreviewImage, sea
             (crew.FullName && crew.FullName.toLowerCase().includes(q)) ||
             (crew.ShortName && crew.ShortName.toLowerCase().includes(q)) ||
             (crew.IDCrew && crew.IDCrew.toLowerCase().includes(q)) ||
-            (crew.NoHP && crew.NoHP.toLowerCase().includes(q))
+            (crew.NoHP && String(crew.NoHP).toLowerCase().includes(q))
         );
     });
 

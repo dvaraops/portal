@@ -1100,3 +1100,14 @@ h6 {
         font-size: 14px;
     }
 }
+
+/* Override for Profile Dropdown */
+#profile-dropdown-override {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    left: auto !important;
+    width: 250px !important;
+    max-width: 250px !important;
+    margin: 0 !important;
+}
